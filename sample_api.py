@@ -24,23 +24,17 @@ api.add_resource(GetProducts, '/getProducts')
 class Product(graphene.ObjectType):
     title = graphene.String()
     
-# Mapping values to Products
 class Query(graphene.ObjectType):
     product = graphene.List(Product)
-    def resolve_product(root, info):
+    def resolve_product(root,info):
         data = requests.get('http://127.0.0.1:5000/getProducts')
         json_content = json.loads(data.text)
-        # Extracting titles from all documents
         pName = [item.get('P-name') for item in json_content]
-        # Creating a list of Product objects
         products = [Product(title=pName) for pName in pName]
         return products
 
-
 class GetTitles(Resource):
     def get(self):
-
-        
         schema = graphene.Schema(query=Query)
         query = """
                 {
@@ -93,10 +87,10 @@ api.add_resource(insertProduct, '/insertProduct')
 class APIDescription(Resource):
     def get(self):
         description = { 
-            "/getProducts": "GET request to retrieve a list of all products from the mongo database.", 
-            "/getTitles": "GET request to retrieve titles of all products using GraphQL query.", 
-            "/insertProduct?api_key=<YOUR_API_KEY>": "POST request to insert a new product into the database. Requires a valid API key.", 
-            "/": "Description page containing a list of the API URLs that are available and a brief description of how they work." 
+            "/getProducts": "in the getProducts page, the GET request retrieves a list of all products from the mongo database.", 
+            "/getTitles": "In the getTitles page, the GET request retrieves titles of all products using GraphQL query.", 
+            "/insertProduct?api_key=<YOUR_API_KEY>": "This is how you add a new product to the database, but you need an API key to do it.", 
+            "/": "This is a page that shows you all the different things you can do with the API and explains how they work" 
         } 
         return jsonify(description)
     
@@ -104,3 +98,5 @@ api.add_resource(APIDescription, '/')
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
+  
