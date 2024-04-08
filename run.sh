@@ -1,5 +1,5 @@
-python sample_api.py &
+    python sample_api.py &
 
-sleep 6
+    sleep 6
 
-python runTests.py
+    python runTests.py

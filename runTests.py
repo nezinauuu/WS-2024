@@ -2,7 +2,7 @@ import unittest
 import os
 import shutil
 import zipfile
-from unitTests import TestAPIEndpoints
+from sample_test import TestAPIEndpoints
 from datetime import datetime
 
 def suite():
