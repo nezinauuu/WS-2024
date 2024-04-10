@@ -24,7 +24,7 @@ api.add_resource(GetProducts, '/getProducts')
 class Product(graphene.ObjectType):
     title = graphene.String()
     
-class Query(graphene.ObjectType):
+class TitleQuery(graphene.ObjectType):
     product = graphene.List(Product)
     def resolve_product(root,info):
         data = requests.get('http://127.0.0.1:5000/getProducts')
@@ -35,7 +35,7 @@ class Query(graphene.ObjectType):
 
 class GetTitles(Resource):
     def get(self):
-        schema = graphene.Schema(query=Query)
+        schema = graphene.Schema(query=TitleQuery)
         query = """
                 {
                 product {
@@ -49,7 +49,7 @@ class GetTitles(Resource):
 api.add_resource(GetTitles, '/getTitles')
 
 class insertProduct(Resource):
-    # Define your custom API key
+
     CUSTOM_API_KEY = "custom_api_key"
     
     def post(self):
@@ -62,17 +62,14 @@ class insertProduct(Resource):
         # Parse the request data
         data = request.get_json()
         
-        #Extract data from the request
         product_id = data.get('ProductId')
         title = data.get('P-name')
         cost = data.get('cost')
-        # quantity = data.get('Quantity')
         
-        # Validate the request data
         if not all([product_id, title, cost]):
             return {"Error": "Missing required data"}, 400
         
-        # Connect to MongoDB and insert the product data
+        # Connect to MongoDB and insert product data
         client = MongoClient("mongodb://root:example@localhost:27017/")
         db = client.sales
         collection = db.sales_data
